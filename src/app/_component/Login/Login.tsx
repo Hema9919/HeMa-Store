@@ -45,10 +45,7 @@ export default function Login() {
       <div className="mx-auto max-w-md">
         {/* Header */}
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-indigo-600 text-white shadow-lg shadow-indigo-600/20">
-            <LogIn className="h-8 w-8" />
-          </div>
-
+    
           <h1 className="text-3xl font-black tracking-tight text-slate-900">
             Welcome Back
           </h1>

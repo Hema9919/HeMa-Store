@@ -28,6 +28,7 @@ export async function userRegister(data: RegisterFormData) {
 
 // login
 import type { LoginFormData } from "@/schemas/loginSchema";
+import { cookies } from "next/headers";
 
 export async function userLogin(data: LoginFormData) {
   try {
@@ -39,11 +40,20 @@ export async function userLogin(data: LoginFormData) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
-      }
+      },
     );
 
     const result = await response.json();
-return response.ok
+    if (response.ok) {
+      const cookie = await cookies();
+      cookie.set("userToken", result.token, {
+        httpOnly: true,
+        // maxAge
+        // expires
+        // secure
+      });
+    }
+    return response.ok;
   } catch (error) {
     throw error;
   }
