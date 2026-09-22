@@ -1,59 +1,34 @@
 "use client";
-
 import { useState } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, Lock, Mail, Phone, User } from "lucide-react";
-import toast from "react-hot-toast";
 
 import { registerSchema, type RegisterFormData } from "@/schemas/registerShema";
+import { userRegister } from "@/api/actions/auth.action";
+import toast from "react-hot-toast";
+import { useRouter } from "next/router";
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showRePassword, setShowRePassword] = useState(false);
-
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    reset,
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
     mode: "onBlur",
   });
-
+  const router = useRouter();
   const onSubmit = async (data: RegisterFormData) => {
-    try {
-      const response = await fetch(
-        "https://ecommerce.routemisr.com/api/v1/auth/signup",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        },
-      );
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message || "Registration failed");
-      }
-
+    const isRegister = await userRegister(data);
+    if (isRegister) {
       toast.success("Account created successfully! 🎉");
-
-      reset();
-
-      // هنا بعد كده ممكن تعمل redirect للـ login
-      // router.push("/login");
-    } catch (error) {
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : "Something went wrong. Please try again.",
-      );
+      router.push("/login");
+    } else {
+      toast.error("Something went wrong. Please try again.");
     }
   };
 
