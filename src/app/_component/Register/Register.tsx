@@ -4,21 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Eye,
-  EyeOff,
-  Lock,
-  Mail,
-  Phone,
-  User,
-  UserPlus,
-} from "lucide-react";
+import { Eye, EyeOff, Lock, Mail, Phone, User } from "lucide-react";
 import toast from "react-hot-toast";
 
-import {
-  registerSchema,
-  type RegisterFormData,
-} from "@/schemas/registerShema";
+import { registerSchema, type RegisterFormData } from "@/schemas/registerShema";
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
@@ -44,7 +33,7 @@ export default function Register() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(data),
-        }
+        },
       );
 
       const result = await response.json();
@@ -63,7 +52,7 @@ export default function Register() {
       toast.error(
         error instanceof Error
           ? error.message
-          : "Something went wrong. Please try again."
+          : "Something went wrong. Please try again.",
       );
     }
   };
@@ -73,12 +62,9 @@ export default function Register() {
       <div className="mx-auto max-w-md">
         {/* Header */}
         <div className="mb-8 text-center">
-       
-
-          <h1 className="mt-2 text-3xl font-black tracking-tight text-slate-900">
-  Create Account
+          <h1 className="text-3xl font-black tracking-tight text-slate-900">
+            Create Account
           </h1>
-
           <p className="mt-2 text-sm text-slate-500">
             Join HeMa Store and start your shopping journey.
           </p>
@@ -86,10 +72,7 @@ export default function Register() {
 
         {/* Form Card */}
         <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-xl shadow-slate-900/5 sm:p-8">
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="space-y-5"
-          >
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             {/* Name */}
             <div>
               <label className="mb-2 block text-sm font-semibold text-slate-700">
@@ -196,9 +179,7 @@ export default function Register() {
 
                 <button
                   type="button"
-                  onClick={() =>
-                    setShowPassword((prev) => !prev)
-                  }
+                  onClick={() => setShowPassword((prev) => !prev)}
                   className="absolute right-3 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
                 >
                   {showPassword ? (
@@ -238,9 +219,7 @@ export default function Register() {
 
                 <button
                   type="button"
-                  onClick={() =>
-                    setShowRePassword((prev) => !prev)
-                  }
+                  onClick={() => setShowRePassword((prev) => !prev)}
                   className="absolute right-3 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
                 >
                   {showRePassword ? (
