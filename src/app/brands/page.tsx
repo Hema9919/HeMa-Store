@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowUpRight, Sparkles } from "lucide-react";
 
 import { getBrands } from "@/api/services/brandsApi";
-import MainTitle from "../_component/MainTitle/MainTitle";
+import MainTitle from "../_component/Maintitle/MainTitle";
 
 export default async function Brands() {
   const brands = await getBrands();

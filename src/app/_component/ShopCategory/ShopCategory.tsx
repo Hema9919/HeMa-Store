@@ -1,5 +1,5 @@
 import { getShopCategories } from "@/api/services/categoriesApi";
-import MainTitle from "./../MainTitle/MainTitle";
+import MainTitle from "./../Maintitle/MainTitle";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";

@@ -1,4 +1,4 @@
-import MainTitle from "./../MainTitle/MainTitle";
+import MainTitle from "./../Maintitle/MainTitle";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { getShopSubCategories } from "@/api/services/subcategories";

@@ -4,9 +4,9 @@ import { useMemo, useState } from "react";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 
 import ProductCard from "../ProductCard/ProductCard";
-import MainTitle from "../MainTitle/MainTitle";
+import MainTitle from "../Maintitle/MainTitle";
 
-import type { ProductType } from "@/types/ProductTypes";
+import type { ProductType } from "@/api/types/productTypes";
 
 interface ShopProductsProps {
   products: ProductType[];
