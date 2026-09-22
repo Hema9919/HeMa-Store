@@ -14,12 +14,16 @@ import {
   MapPin,
 } from "lucide-react";
 
+type NavLink = {
+name: string;
+href: string;
+};
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const pathname = usePathname();
 
-  const navLinks = [
+  const navLinks: NavLink[] = [
     {
       name: "Home",
       href: "/",
