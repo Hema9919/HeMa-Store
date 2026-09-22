@@ -76,7 +76,6 @@ export default function Register() {
        
 
           <h1 className="mt-5 text-3xl font-black tracking-tight text-slate-900">
-                      <UserPlus className="h-6 w-6" />
   Create Account
           </h1>
 
