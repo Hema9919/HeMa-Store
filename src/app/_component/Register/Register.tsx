@@ -75,7 +75,7 @@ export default function Register() {
         <div className="mb-8 text-center">
        
 
-          <h1 className="mt-5 text-3xl font-black tracking-tight text-slate-900">
+          <h1 className="mt-2 text-3xl font-black tracking-tight text-slate-900">
   Create Account
           </h1>
 
