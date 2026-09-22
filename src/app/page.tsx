@@ -3,10 +3,9 @@ import HeroSection from "./_component/HeroSection/HeroSection";
 import dynamic from "next/dynamic";
 // import ShopCategory from "./_component/ShopCategory/ShopCategory";
 const ShopCategory = dynamic(
-  () => import("./_component/ShopCategory/ShopCategory"),{
-    loading:()=>{
-      <div>..Loading</div>
-    }
+  () => import("./_component/ShopCategory/ShopCategory"),
+  {
+    loading: () => <div>..Loading</div>,
   }
 );
 export default function Home() {
