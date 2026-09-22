@@ -8,11 +8,11 @@ import { Eye, EyeOff, Lock, Mail, Phone, User } from "lucide-react";
 import { registerSchema, type RegisterFormData } from "@/schemas/registerShema";
 import { userRegister } from "@/api/actions/auth.action";
 import toast from "react-hot-toast";
-import { useRouter } from "next/router";
-
+import { useRouter } from "next/navigation";
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showRePassword, setShowRePassword] = useState(false);
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -21,7 +21,6 @@ export default function Register() {
     resolver: zodResolver(registerSchema),
     mode: "onBlur",
   });
-  const router = useRouter();
   const onSubmit = async (data: RegisterFormData) => {
     const isRegister = await userRegister(data);
     if (isRegister) {
