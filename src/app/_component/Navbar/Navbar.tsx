@@ -38,7 +38,7 @@ export default function Navbar() {
     },
   ];
 
-  const isActive = (href) => {
+  const isActive = (href:string) => {
     if (href === "/") {
       return pathname === "/";
     }
