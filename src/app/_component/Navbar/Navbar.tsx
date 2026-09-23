@@ -4,6 +4,9 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
+import { useCart } from "@/context/CartContext";
+import { useWishlist } from "@/context/WishlistContext";
 
 import {
   ShoppingCart,
@@ -12,6 +15,8 @@ import {
   X,
   Phone,
   MapPin,
+  User,
+  LogOut,
 } from "lucide-react";
 
 type NavLink = {
@@ -20,6 +25,9 @@ href: string;
 };
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { data: session, status } = useSession();
+  const { cartCount } = useCart();
+  const { wishlistCount } = useWishlist();
 
   const pathname = usePathname();
 
@@ -88,25 +96,48 @@ export default function Navbar() {
           {/* Auth */}
 
           <div className="flex items-center gap-4">
+            {status === "authenticated" ? (
+              <div className="flex items-center gap-3">
+                <Link
+                  href="/profile"
+                  className="flex items-center gap-1.5 font-medium text-white transition hover:text-indigo-400"
+                >
+                  <User size={13} />
+                  <span>Hi, {session?.user?.name || "My Account"}</span>
+                </Link>
 
-            <Link
-              href="/login"
-              className="transition hover:text-white"
-            >
-              Login
-            </Link>
+                <span className="text-slate-700">|</span>
 
-            <span className="text-slate-700">
-              |
-            </span>
+                <button
+                  type="button"
+                  onClick={() => signOut({ callbackUrl: "/login" })}
+                  className="flex items-center gap-1 text-slate-300 transition hover:text-red-400"
+                >
+                  <LogOut size={13} />
+                  <span>Logout</span>
+                </button>
+              </div>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="transition hover:text-white"
+                >
+                  Login
+                </Link>
 
-            <Link
-              href="/register"
-              className="font-semibold text-white transition hover:text-indigo-400"
-            >
-              Sign Up
-            </Link>
+                <span className="text-slate-700">
+                  |
+                </span>
 
+                <Link
+                  href="/register"
+                  className="font-semibold text-white transition hover:text-indigo-400"
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
           </div>
 
         </div>
@@ -206,7 +237,7 @@ export default function Navbar() {
               />
 
               <span className="absolute right-0.5 top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-indigo-600 px-1 text-[9px] font-bold text-white">
-                0
+                {wishlistCount}
               </span>
             </Link>
 
@@ -234,7 +265,7 @@ export default function Navbar() {
               />
 
               <span className="absolute right-0.5 top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-indigo-600 px-1 text-[9px] font-bold text-white">
-                0
+                {cartCount}
               </span>
             </Link>
 
@@ -291,39 +322,64 @@ export default function Navbar() {
             {/* Mobile Auth */}
 
             <div className="mt-3 border-t border-slate-100 pt-3">
+              {status === "authenticated" ? (
+                <>
+                  <Link
+                    href="/profile"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="flex items-center gap-2 rounded-xl px-4 py-3 font-semibold text-slate-700 hover:bg-slate-50"
+                  >
+                    <User size={18} className="text-indigo-600" />
+                    <span>My Profile ({session?.user?.name || "Account"})</span>
+                  </Link>
 
-              <Link
-                href="/login"
-                onClick={() => setIsMenuOpen(false)}
-                className={`
-                  block rounded-xl px-4 py-3
-                  font-medium transition
-                  ${
-                    pathname === "/login"
-                      ? "bg-indigo-50 text-indigo-600"
-                      : "text-slate-700 hover:bg-slate-50"
-                  }
-                `}
-              >
-                Login
-              </Link>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                      signOut({ callbackUrl: "/login" });
+                    }}
+                    className="flex w-full items-center gap-2 rounded-xl px-4 py-3 font-semibold text-red-500 hover:bg-red-50"
+                  >
+                    <LogOut size={18} />
+                    <span>Logout</span>
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    onClick={() => setIsMenuOpen(false)}
+                    className={`
+                      block rounded-xl px-4 py-3
+                      font-medium transition
+                      ${
+                        pathname === "/login"
+                          ? "bg-indigo-50 text-indigo-600"
+                          : "text-slate-700 hover:bg-slate-50"
+                      }
+                    `}
+                  >
+                    Login
+                  </Link>
 
-              <Link
-                href="/register"
-                onClick={() => setIsMenuOpen(false)}
-                className={`
-                  block rounded-xl px-4 py-3
-                  font-semibold transition
-                  ${
-                    pathname === "/register"
-                      ? "bg-indigo-50 text-indigo-600"
-                      : "text-indigo-600 hover:bg-indigo-50"
-                  }
-                `}
-              >
-                Sign Up
-              </Link>
-
+                  <Link
+                    href="/register"
+                    onClick={() => setIsMenuOpen(false)}
+                    className={`
+                      block rounded-xl px-4 py-3
+                      font-semibold transition
+                      ${
+                        pathname === "/register"
+                          ? "bg-indigo-50 text-indigo-600"
+                          : "text-indigo-600 hover:bg-indigo-50"
+                      }
+                    `}
+                  >
+                    Sign Up
+                  </Link>
+                </>
+              )}
             </div>
 
           </nav>

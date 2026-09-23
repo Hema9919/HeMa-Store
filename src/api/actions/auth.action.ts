@@ -1,7 +1,7 @@
 "use server";
 //register
 import { RegisterFormData } from "@/schemas/registerShema";
-import toast from "react-hot-toast";
+
 export async function userRegister(data: RegisterFormData) {
   try {
     const response = await fetch(
@@ -17,11 +17,8 @@ export async function userRegister(data: RegisterFormData) {
 
     return response.ok;
   } catch (error) {
-    toast.error(
-      error instanceof Error
-        ? error.message
-        : "Something went wrong. Please try again.",
-    );
+    console.error("userRegister error:", error);
+    return false;
   }
 }
 

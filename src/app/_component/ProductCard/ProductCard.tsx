@@ -5,9 +5,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { Heart, ShoppingCart, Star, ArrowUpRight, Tag } from "lucide-react";
 import { ProductType } from "@/api/types/productTypes";
+import { useCart } from "@/context/CartContext";
+import { useWishlist } from "@/context/WishlistContext";
+
 interface ProductCardProps {
   product: ProductType;
 }
+
 export default function ProductCard({ product }: ProductCardProps) {
   const {
     id,
@@ -26,6 +30,11 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   const productId = id || _id;
 
+  const { addToCartAction } = useCart();
+  const { isInWishlist, toggleWishlistAction } = useWishlist();
+
+  const inWishlist = isInWishlist(productId);
+
   const hasDiscount = priceAfterDiscount && priceAfterDiscount < price;
 
   const discountPercentage = hasDiscount
@@ -43,7 +52,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     <article className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white transition-all duration-500 hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl hover:shadow-slate-200/60">
       {/* ================= IMAGE ================= */}
       <div className="relative aspect-square overflow-hidden bg-slate-50">
-        <Link href={`/products/${slug || productId}`}>
+        <Link href={`/productDetails/${productId}`}>
           <Image
             src={imageCover}
             alt={title}
@@ -74,13 +83,22 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* Wishlist */}
         <button
           type="button"
-          aria-label="Add to wishlist"
-          className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-slate-600 shadow-md backdrop-blur-sm transition-all duration-300 hover:bg-white hover:text-red-500 hover:shadow-lg"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleWishlistAction(productId);
+          }}
+          aria-label="Toggle wishlist"
+          className={`absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-md backdrop-blur-sm transition-all duration-300 hover:bg-white hover:shadow-lg ${
+            inWishlist ? "text-red-500" : "text-slate-600 hover:text-red-500"
+          }`}
         >
           <Heart
             size={19}
             strokeWidth={1.8}
-            className="transition-transform duration-300 hover:scale-110"
+            className={`transition-transform duration-300 hover:scale-110 ${
+              inWishlist ? "fill-red-500 text-red-500" : ""
+            }`}
           />
         </button>
 
@@ -151,13 +169,18 @@ export default function ProductCard({ product }: ProductCardProps) {
           <button
             type="button"
             disabled={isOutOfStock}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              addToCartAction(productId);
+            }}
             className={`
               flex h-11 w-11 shrink-0 items-center justify-center
               rounded-xl transition-all duration-300
               ${
                 isOutOfStock
                   ? "cursor-not-allowed bg-slate-100 text-slate-300"
-                  : "bg-indigo-600 text-white shadow-lg shadow-indigo-200 hover:bg-indigo-700 hover:shadow-indigo-300"
+                  : "bg-indigo-600 text-white shadow-lg shadow-indigo-200 hover:bg-indigo-700 hover:shadow-indigo-300 active:scale-95"
               }
             `}
             aria-label="Add to cart"

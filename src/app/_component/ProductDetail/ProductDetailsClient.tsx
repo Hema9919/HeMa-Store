@@ -16,7 +16,10 @@ import {
   Check,
   ChevronRight,
   PackageCheck,
+  Loader2,
 } from "lucide-react";
+import { useCart } from "@/context/CartContext";
+import { useWishlist } from "@/context/WishlistContext";
 
 interface ProductDetailsClientProps {
   product: any;
@@ -30,8 +33,13 @@ export default function ProductDetailsClient({
   );
 
   const [quantity, setQuantity] = useState(1);
+  const [isAdding, setIsAdding] = useState(false);
 
-  const [isFavorite, setIsFavorite] = useState(false);
+  const { addToCartAction, updateQuantityAction } = useCart();
+  const { isInWishlist, toggleWishlistAction } = useWishlist();
+
+  const productId = product.id || product._id;
+  const isFavorite = isInWishlist(productId);
 
   const {
     title,
@@ -440,7 +448,15 @@ export default function ProductDetailsClient({
 
               <button
                 type="button"
-                disabled={isOutOfStock}
+                disabled={isOutOfStock || isAdding}
+                onClick={async () => {
+                  setIsAdding(true);
+                  const success = await addToCartAction(productId);
+                  if (success && quantity > 1) {
+                    await updateQuantityAction(productId, quantity);
+                  }
+                  setIsAdding(false);
+                }}
                 className="
                   flex h-14 flex-1 items-center justify-center
                   gap-3 rounded-xl bg-indigo-600
@@ -449,23 +465,28 @@ export default function ProductDetailsClient({
                   transition-all duration-300
                   hover:bg-indigo-700
                   hover:shadow-xl hover:shadow-indigo-300
+                  active:scale-[0.99]
                   disabled:cursor-not-allowed
                   disabled:bg-slate-200
                   disabled:text-slate-400
                   disabled:shadow-none
                 "
               >
-                <ShoppingCart size={20} />
+                {isAdding ? (
+                  <Loader2 size={20} className="animate-spin" />
+                ) : (
+                  <ShoppingCart size={20} />
+                )}
                 {isOutOfStock
                   ? "Out of Stock"
+                  : isAdding
+                  ? "Adding to Cart..."
                   : "Add to Cart"}
               </button>
 
               <button
                 type="button"
-                onClick={() =>
-                  setIsFavorite(!isFavorite)
-                }
+                onClick={() => toggleWishlistAction(productId)}
                 className={`
                   flex h-14 w-14 shrink-0
                   items-center justify-center
@@ -477,6 +498,7 @@ export default function ProductDetailsClient({
                       : "border-slate-200 bg-white text-slate-600 hover:border-red-200 hover:text-red-500"
                   }
                 `}
+                aria-label="Toggle Wishlist"
               >
                 <Heart
                   size={21}

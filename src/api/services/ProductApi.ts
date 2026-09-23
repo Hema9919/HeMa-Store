@@ -4,7 +4,7 @@ import { ProductType } from "../types/productTypes";
 export async function getAllProducts(): Promise<ProductType[]> {
   try {
     const response = await fetch(
-      "https:///ecommerce.routemisr.com/api/v1/products",
+      "https://ecommerce.routemisr.com/api/v1/products",
       {
         cache: "force-cache",
       },
