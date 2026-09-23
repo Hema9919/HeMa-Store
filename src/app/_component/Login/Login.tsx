@@ -26,13 +26,19 @@ export default function Login() {
   });
 
   const onSubmit = async (data: LoginFormData) => {
-    const isLogin = await signIn("credentials", {...data, redirect: false });
-    console.log(isLogin);
-    if (isLogin?.ok) {
+    console.log("LOGIN DATA:", data);
+    const result = await signIn("credentials", {
+      email: data.email,
+      password: data.password,
+      redirect: false,
+    });
+    console.log("NEXTAUTH RESULT:", result);
+    if (result?.ok) {
       toast.success("Logged in successfully! 🎉");
       router.push("/");
     } else {
-      toast.error("Faild Sign in");
+      console.log("NEXTAUTH ERROR:", result?.error);
+      toast.error(result?.error || "Failed Sign in");
     }
   };
 

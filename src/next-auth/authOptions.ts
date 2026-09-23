@@ -1,15 +1,11 @@
 import { jwtDecode } from "jwt-decode";
 import { NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-
 export const authOptions: NextAuthOptions = {
   providers: [
-    // ways to sign in by google/email/github/credentials
     Credentials({
-      // name button
       name: "myLogin",
       credentials: {
-        //inputInfo
         email: {
           label: "Email",
           type: "email",
@@ -21,23 +17,23 @@ export const authOptions: NextAuthOptions = {
           placeholder: "Enter your Password",
         },
       },
-      //call api , navigate user to home page
       async authorize(credentials) {
-        // return null or error or object
+        if (!credentials?.email || !credentials?.password) {
+          return null;
+        }
         const response = await fetch(`${process.env.API}auth/signin`, {
           method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            email: credentials?.email,
-            password: credentials?.password,
+            email: credentials.email,
+            password: credentials.password,
           }),
-          headers: {
-            "Content-Type": "application/json",
-          },
         });
-        if (!response.ok) {
-          throw new Error(response.statusText);
-        }
         const payload = await response.json();
+        console.log("ROUTEMISR RESPONSE:", payload);
+        if (!response.ok) {
+          return null;
+        }
         const userData: { id: string } = jwtDecode(payload.token);
         return {
           id: userData.id,
@@ -49,12 +45,22 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    jwt(params) {
-      return params;
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        token.accessToken = user.token;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as string;
+      }
+      session.accessToken = token.accessToken as string;
+      return session;
     },
   },
-  //pages
-  pages: {
-    signIn: "/login",
-  },
+  pages: { signIn: "/login" },
+  session: { strategy: "jwt" },
+  secret: process.env.NEXTAUTH_SECRET,
 };
