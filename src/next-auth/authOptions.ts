@@ -30,7 +30,7 @@ export const authOptions: NextAuthOptions = {
           }),
         });
         const payload = await response.json();
-        console.log("ROUTEMISR RESPONSE:", payload);
+        console.log("ROUTEMISR LOGIN:", payload);
         if (!response.ok) {
           return null;
         }
@@ -53,9 +53,7 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.id as string;
-      }
+      session.user.id = token.id as string;
       session.accessToken = token.accessToken as string;
       return session;
     },
