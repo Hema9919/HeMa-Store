@@ -1,3 +1,4 @@
+import { jwtDecode } from "jwt-decode";
 import { NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
@@ -23,34 +24,32 @@ export const authOptions: NextAuthOptions = {
       //call api , navigate user to home page
       async authorize(credentials) {
         // return null or error or object
-        const response = await fetch(
-          "https://ecommerce.routemisr.com/api/v1/auth/signin",
-          {
-            method: "POST",
-            body: JSON.stringify({
-              email: credentials?.email,
-              password: credentials?.password,
-            }),
-            headers: {
-              "Content-Type": "application/json",
-            },
+        const response = await fetch(`${process.env.API}auth/signin`, {
+          method: "POST",
+          body: JSON.stringify({
+            email: credentials?.email,
+            password: credentials?.password,
+          }),
+          headers: {
+            "Content-Type": "application/json",
           },
-        );
+        });
         if (!response.ok) {
           throw new Error(response.statusText);
         }
         const payload = await response.json();
+        const userData: { id: string } = jwtDecode(payload.token);
         return {
-          id:'',
-          email:payload.user.email,
-          name:payload.user.name,
-          token:payload.token
+          id: userData.id,
+          email: payload.user.email,
+          name: payload.user.name,
+          token: payload.token,
         };
       },
     }),
   ],
   //pages
-  pages:{
-    signIn:'/login'
-  }
+  pages: {
+    signIn: "/login",
+  },
 };

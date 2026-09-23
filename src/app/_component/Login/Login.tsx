@@ -27,7 +27,7 @@ export default function Login() {
 
   const onSubmit = async (data: LoginFormData) => {
     const isLogin = await signIn("credentials", { ...data, redirect: false });
-    console.log(data);
+    console.log(isLogin);
     if (isLogin?.ok) {
       toast.success("Logged in successfully! 🎉");
       router.push("/");
