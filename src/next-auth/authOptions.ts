@@ -48,6 +48,11 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  callbacks: {
+    jwt(params) {
+      return params;
+    },
+  },
   //pages
   pages: {
     signIn: "/login",
