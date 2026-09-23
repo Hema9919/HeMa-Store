@@ -15,7 +15,6 @@ export async function userRegister(data: RegisterFormData) {
       },
     );
 
-    const result = await response.json();
     return response.ok;
   } catch (error) {
     toast.error(
@@ -27,34 +26,34 @@ export async function userRegister(data: RegisterFormData) {
 }
 
 // login
-import type { LoginFormData } from "@/schemas/loginSchema";
-import { cookies } from "next/headers";
+// import type { LoginFormData } from "@/schemas/loginSchema";
+// import { cookies } from "next/headers";
 
-export async function userLogin(data: LoginFormData) {
-  try {
-    const response = await fetch(
-      "https://ecommerce.routemisr.com/api/v1/auth/signin",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      },
-    );
+// export async function userLogin(data: LoginFormData) {
+//   try {
+//     const response = await fetch(
+//       "https://ecommerce.routemisr.com/api/v1/auth/signin",
+//       {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify(data),
+//       },
+//     );
 
-    const result = await response.json();
-    if (response.ok) {
-      const cookie = await cookies();
-      cookie.set("userToken", result.token, {
-        httpOnly: true,
-        // maxAge
-        // expires
-        // secure
-      });
-    }
-    return response.ok;
-  } catch (error) {
-    throw error;
-  }
-}
+//     const result = await response.json();
+//     if (response.ok) {
+//       const cookie = await cookies();
+//       cookie.set("userToken", result.token, {
+//         httpOnly: true,
+//         // maxAge
+//         // expires
+//         // secure
+//       });
+//     }
+//     return response.ok;
+//   } catch (error) {
+//     throw error;
+//   }
+// }

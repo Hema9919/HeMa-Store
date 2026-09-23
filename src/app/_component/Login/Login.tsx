@@ -9,7 +9,7 @@ import { Eye, EyeOff, Lock, LogIn, Mail, ShieldCheck } from "lucide-react";
 import toast from "react-hot-toast";
 
 import { loginSchema, type LoginFormData } from "@/schemas/loginSchema";
-import { userLogin } from "@/api/actions/auth.action";
+import { signIn } from "next-auth/react";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -26,17 +26,13 @@ export default function Login() {
   });
 
   const onSubmit = async (data: LoginFormData) => {
-    try {
-      const result = await userLogin(data);
-
-      if (result) {
-        toast.success("Logged in successfully! 🎉");
-        router.push("/");
-      }
-    } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Invalid email or password",
-      );
+    const isLogin = await signIn("credentials", { ...data, redirect: false });
+    console.log(data);
+    if (isLogin?.ok) {
+      toast.success("Logged in successfully! 🎉");
+      router.push("/");
+    } else {
+      toast.error("Faild Sign in");
     }
   };
 
@@ -45,7 +41,6 @@ export default function Login() {
       <div className="mx-auto max-w-md">
         {/* Header */}
         <div className="mb-8 text-center">
-    
           <h1 className="text-3xl font-black tracking-tight text-slate-900">
             Welcome Back
           </h1>
