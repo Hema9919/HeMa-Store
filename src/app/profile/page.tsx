@@ -276,22 +276,7 @@ export default function ProfilePage() {
                     </div>
                   </div>
 
-                  <div>
-                    <label className="mb-2 block text-sm font-semibold text-slate-700">
-                      Egyptian Phone Number
-                    </label>
-                    <div className="relative">
-                      <Phone className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
-                      <input
-                        type="tel"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        required
-                        placeholder="01012345678"
-                        className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 pl-12 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-500/10"
-                      />
-                    </div>
-                  </div>
+       
 
                   <button
                     type="submit"
