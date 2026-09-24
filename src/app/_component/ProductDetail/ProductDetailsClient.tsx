@@ -164,9 +164,7 @@ export default function ProductDetailsClient({
 
               <button
                 type="button"
-                onClick={() =>
-                  setIsFavorite(!isFavorite)
-                }
+            onClick={() => toggleWishlistAction(productId)}
                 className={`
                   absolute right-5 top-5 flex h-12 w-12
                   items-center justify-center rounded-full
