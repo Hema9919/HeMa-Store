@@ -42,14 +42,14 @@ export default function MyOrdersPage() {
       try {
         setIsLoading(true);
 
-        const response = await getUserOrders(
-          userId,
-          token
-        );
+      const response = await getUserOrders(
+  userId,
+  token
+);
 
-        console.log("USER ORDERS:", response);
+console.log("USER ORDERS:", response);
 
-        setOrders(response.data || []);
+setOrders(response);
       } catch (error) {
         console.error("Get orders error:", error);
 
@@ -214,9 +214,9 @@ export default function MyOrdersPage() {
                         className="text-indigo-600"
                       />
 
-                      <span className="text-sm font-black text-slate-900">
-                        Order #{order._id.slice(-8)}
-                      </span>
+               <span className="text-sm font-black text-slate-900">
+  Order #{order.id}
+</span>
                     </div>
 
                     <div className="mt-2 flex items-center gap-2 text-xs text-slate-400">

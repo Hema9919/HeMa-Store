@@ -27,7 +27,9 @@ export async function createCashOrder(
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.message || "Failed to create order");
+    throw new Error(
+      data.message || "Failed to create order"
+    );
   }
 
   return data;
@@ -52,7 +54,9 @@ export async function getUserOrders(
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.message || "Failed to fetch orders");
+    throw new Error(
+      data.message || "Failed to fetch orders"
+    );
   }
 
   return data;

@@ -16,19 +16,34 @@ export interface OrderCartItem {
   product: OrderProduct;
 }
 
+export interface OrderUser {
+  _id: string;
+  name: string;
+  email: string;
+  phone: string;
+}
+
 export interface Order {
   _id: string;
-  user: string;
+  id: number;
+
   cartItems: OrderCartItem[];
-  shippingAddress: ShippingAddress;
-  totalOrderPrice: number;
-  paymentMethodType: string;
-  isPaid: boolean;
-  paidAt?: string;
-  isDelivered: boolean;
-  deliveredAt?: string;
+
   createdAt: string;
   updatedAt: string;
+
+  user: OrderUser;
+
+  shippingAddress: ShippingAddress;
+
+  shippingPrice: number;
+  taxPrice: number;
+  totalOrderPrice: number;
+
+  paymentMethodType: string;
+
+  isPaid: boolean;
+  isDelivered: boolean;
 }
 
 export interface CreateOrderResponse {
@@ -36,7 +51,4 @@ export interface CreateOrderResponse {
   data: Order;
 }
 
-export interface UserOrdersResponse {
-  status: string;
-  data: Order[];
-}
+export type UserOrdersResponse = Order[];
