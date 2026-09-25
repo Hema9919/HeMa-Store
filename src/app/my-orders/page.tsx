@@ -302,7 +302,7 @@ export default function MyOrdersPage() {
                   </div>
 
                   <Link
-                    className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 py-4 text-sm font-bold text-white shadow-lg shadow-indigo-200 transition hover:bg-indigo-700 active:scale-95"
+                    className="mt-6 flex items-center justify-center gap-2 rounded-xl bg-indigo-600 py-4 text-sm font-bold text-white shadow-lg shadow-indigo-200 transition hover:bg-indigo-700 active:scale-95"
                     href={`/ordersDetails/${order._id}`}
                   >
                     View Order
