@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
+import AddReview from "../ModelReview/AddReview";
 
 interface ProductDetailsClientProps {
   product: any;
@@ -28,16 +29,15 @@ interface ProductDetailsClientProps {
 export default function ProductDetailsClient({
   product,
 }: ProductDetailsClientProps) {
-  const [selectedImage, setSelectedImage] = useState(
-    product.imageCover
-  );
+  const [selectedImage, setSelectedImage] = useState(product.imageCover);
 
   const [quantity, setQuantity] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
 
+  const [isReviewOpen, setIsReviewOpen] = useState(false);
+
   const { addToCartAction, updateQuantityAction } = useCart();
   const { isInWishlist, toggleWishlistAction } = useWishlist();
-
   const productId = product.id || product._id;
   const isFavorite = isInWishlist(productId);
 
@@ -59,17 +59,13 @@ export default function ProductDetailsClient({
   } = product;
 
   const allImages = [imageCover, ...(images || [])].filter(
-    (image, index, array) => array.indexOf(image) === index
+    (image, index, array) => array.indexOf(image) === index,
   );
 
-  const hasDiscount =
-    priceAfterDiscount &&
-    priceAfterDiscount < price;
+  const hasDiscount = priceAfterDiscount && priceAfterDiscount < price;
 
   const discountPercentage = hasDiscount
-    ? Math.round(
-        ((price - priceAfterDiscount) / price) * 100
-      )
+    ? Math.round(((price - priceAfterDiscount) / price) * 100)
     : 0;
 
   const isOutOfStock = stockQuantity <= 0;
@@ -88,12 +84,9 @@ export default function ProductDetailsClient({
 
   return (
     <main className="min-h-screen bg-[#F8FAFC]">
-
       {/* ================= BREADCRUMB ================= */}
-
       <div className="border-b border-slate-200 bg-white">
         <div className="mx-auto flex max-w-7xl items-center gap-2 px-4 py-4 text-sm sm:px-6 lg:px-8">
-
           <Link
             href="/"
             className="text-slate-400 transition hover:text-indigo-600"
@@ -101,10 +94,7 @@ export default function ProductDetailsClient({
             Home
           </Link>
 
-          <ChevronRight
-            size={15}
-            className="text-slate-300"
-          />
+          <ChevronRight size={15} className="text-slate-300" />
 
           <Link
             href="/shop"
@@ -113,30 +103,20 @@ export default function ProductDetailsClient({
             Shop
           </Link>
 
-          <ChevronRight
-            size={15}
-            className="text-slate-300"
-          />
+          <ChevronRight size={15} className="text-slate-300" />
 
           <span className="max-w-[200px] truncate font-medium text-slate-700">
             {title}
           </span>
-
         </div>
       </div>
-
       {/* ================= PRODUCT ================= */}
-
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
-
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-14">
-
           {/* ================= LEFT - IMAGES ================= */}
 
           <div>
-
             <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white">
-
               {/* Discount */}
 
               {hasDiscount && (
@@ -148,7 +128,6 @@ export default function ProductDetailsClient({
               {/* Main Image */}
 
               <div className="relative aspect-square w-full">
-
                 <Image
                   src={selectedImage}
                   alt={title}
@@ -157,14 +136,13 @@ export default function ProductDetailsClient({
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-contain p-8 transition-all duration-500"
                 />
-
               </div>
 
               {/* Wishlist */}
 
               <button
                 type="button"
-            onClick={() => toggleWishlistAction(productId)}
+                onClick={() => toggleWishlistAction(productId)}
                 className={`
                   absolute right-5 top-5 flex h-12 w-12
                   items-center justify-center rounded-full
@@ -177,18 +155,13 @@ export default function ProductDetailsClient({
                   }
                 `}
               >
-                <Heart
-                  size={21}
-                  fill={isFavorite ? "currentColor" : "none"}
-                />
+                <Heart size={21} fill={isFavorite ? "currentColor" : "none"} />
               </button>
-
             </div>
 
             {/* Thumbnail Images */}
 
             <div className="mt-4 grid grid-cols-5 gap-3">
-
               {allImages.map((image: string, index: number) => (
                 <button
                   key={`${image}-${index}`}
@@ -214,19 +187,15 @@ export default function ProductDetailsClient({
                   />
                 </button>
               ))}
-
             </div>
-
           </div>
 
           {/* ================= RIGHT - DETAILS ================= */}
 
           <div className="flex flex-col">
-
             {/* Brand */}
 
             <div className="mb-4 flex items-center gap-3">
-
               {brand?.image && (
                 <div className="relative h-8 w-16">
                   <Image
@@ -242,7 +211,6 @@ export default function ProductDetailsClient({
               <span className="text-sm font-semibold uppercase tracking-wider text-indigo-600">
                 {brand?.name}
               </span>
-
             </div>
 
             {/* Title */}
@@ -254,9 +222,7 @@ export default function ProductDetailsClient({
             {/* Rating */}
 
             <div className="mt-5 flex flex-wrap items-center gap-4">
-
               <div className="flex items-center gap-1">
-
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Star
                     key={star}
@@ -273,7 +239,6 @@ export default function ProductDetailsClient({
                     }
                   />
                 ))}
-
               </div>
 
               <span className="font-bold text-slate-800">
@@ -286,23 +251,15 @@ export default function ProductDetailsClient({
 
               <span className="h-5 w-px bg-slate-200" />
 
-              <span className="text-sm text-slate-500">
-                {sold || 0} sold
-              </span>
-
+              <span className="text-sm text-slate-500">{sold || 0} sold</span>
             </div>
 
             {/* Price */}
 
             <div className="mt-7 rounded-2xl border border-slate-200 bg-white p-5">
-
               <div className="flex items-end gap-3">
-
                 <span className="text-4xl font-black tracking-tight text-slate-900">
-                  $
-                  {hasDiscount
-                    ? priceAfterDiscount
-                    : price}
+                  ${hasDiscount ? priceAfterDiscount : price}
                 </span>
 
                 {hasDiscount && (
@@ -310,7 +267,6 @@ export default function ProductDetailsClient({
                     ${price}
                   </span>
                 )}
-
               </div>
 
               {hasDiscount && (
@@ -318,13 +274,11 @@ export default function ProductDetailsClient({
                   You save ${price - priceAfterDiscount}
                 </p>
               )}
-
             </div>
 
             {/* Description */}
 
             <div className="mt-7">
-
               <h2 className="mb-3 text-sm font-bold uppercase tracking-wider text-slate-900">
                 Description
               </h2>
@@ -332,13 +286,11 @@ export default function ProductDetailsClient({
               <p className="whitespace-pre-line text-sm leading-7 text-slate-500">
                 {description}
               </p>
-
             </div>
 
             {/* Category */}
 
             <div className="mt-6 flex flex-wrap gap-2">
-
               {category?.name && (
                 <span className="rounded-full bg-indigo-50 px-4 py-2 text-xs font-semibold text-indigo-600">
                   {category.name}
@@ -353,13 +305,11 @@ export default function ProductDetailsClient({
                   {sub.name}
                 </span>
               ))}
-
             </div>
 
             {/* Stock */}
 
             <div className="mt-7 flex items-center gap-3">
-
               <div
                 className={`
                   flex h-9 w-9 items-center justify-center
@@ -380,9 +330,7 @@ export default function ProductDetailsClient({
 
               <div>
                 <p className="text-sm font-bold text-slate-800">
-                  {isOutOfStock
-                    ? "Out of Stock"
-                    : "In Stock"}
+                  {isOutOfStock ? "Out of Stock" : "In Stock"}
                 </p>
 
                 {!isOutOfStock && (
@@ -391,22 +339,18 @@ export default function ProductDetailsClient({
                   </p>
                 )}
               </div>
-
             </div>
 
             {/* Quantity */}
 
             {!isOutOfStock && (
               <div className="mt-7">
-
                 <p className="mb-3 text-sm font-bold text-slate-900">
                   Quantity
                 </p>
 
                 <div className="flex items-center gap-4">
-
                   <div className="flex h-12 items-center rounded-xl border border-slate-200 bg-white">
-
                     <button
                       type="button"
                       onClick={decreaseQuantity}
@@ -428,22 +372,18 @@ export default function ProductDetailsClient({
                     >
                       <Plus size={17} />
                     </button>
-
                   </div>
 
                   <span className="text-xs text-slate-400">
                     Maximum {stockQuantity}
                   </span>
-
                 </div>
-
               </div>
             )}
 
             {/* Add To Cart */}
 
             <div className="mt-7 flex gap-3">
-
               <button
                 type="button"
                 disabled={isOutOfStock || isAdding}
@@ -478,8 +418,8 @@ export default function ProductDetailsClient({
                 {isOutOfStock
                   ? "Out of Stock"
                   : isAdding
-                  ? "Adding to Cart..."
-                  : "Add to Cart"}
+                    ? "Adding to Cart..."
+                    : "Add to Cart"}
               </button>
 
               <button
@@ -498,27 +438,15 @@ export default function ProductDetailsClient({
                 `}
                 aria-label="Toggle Wishlist"
               >
-                <Heart
-                  size={21}
-                  fill={
-                    isFavorite
-                      ? "currentColor"
-                      : "none"
-                  }
-                />
+                <Heart size={21} fill={isFavorite ? "currentColor" : "none"} />
               </button>
-
             </div>
 
             {/* Features */}
 
             <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
-
               <div className="rounded-xl border border-slate-200 bg-white p-4">
-                <Truck
-                  size={20}
-                  className="mb-2 text-indigo-600"
-                />
+                <Truck size={20} className="mb-2 text-indigo-600" />
                 <p className="text-xs font-bold text-slate-800">
                   Fast Delivery
                 </p>
@@ -528,67 +456,53 @@ export default function ProductDetailsClient({
               </div>
 
               <div className="rounded-xl border border-slate-200 bg-white p-4">
-                <ShieldCheck
-                  size={20}
-                  className="mb-2 text-indigo-600"
-                />
+                <ShieldCheck size={20} className="mb-2 text-indigo-600" />
                 <p className="text-xs font-bold text-slate-800">
                   Secure Payment
                 </p>
-                <p className="mt-1 text-[11px] text-slate-400">
-                  100% secure
-                </p>
+                <p className="mt-1 text-[11px] text-slate-400">100% secure</p>
               </div>
 
               <div className="rounded-xl border border-slate-200 bg-white p-4">
-                <RotateCcw
-                  size={20}
-                  className="mb-2 text-indigo-600"
-                />
-                <p className="text-xs font-bold text-slate-800">
-                  Easy Returns
-                </p>
-                <p className="mt-1 text-[11px] text-slate-400">
-                  Hassle-free
-                </p>
+                <RotateCcw size={20} className="mb-2 text-indigo-600" />
+                <p className="text-xs font-bold text-slate-800">Easy Returns</p>
+                <p className="mt-1 text-[11px] text-slate-400">Hassle-free</p>
               </div>
-
             </div>
-
           </div>
-
         </div>
 
         {/* ================= REVIEWS ================= */}
 
         <section className="mt-16 border-t border-slate-200 pt-12">
+          <div className="flex justify-between">
+            <div className="mb-8">
+              <span className="text-xs font-bold uppercase tracking-[0.2em] text-indigo-600">
+                Customer Feedback
+              </span>
 
-          <div className="mb-8">
-
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-indigo-600">
-              Customer Feedback
-            </span>
-
-            <h2 className="mt-2 text-2xl font-extrabold text-slate-900 sm:text-3xl">
-              Customer Reviews
-            </h2>
-
+              <h2 className="mt-2 text-2xl font-extrabold text-slate-900 sm:text-3xl">
+                Customer Reviews
+              </h2>
+            </div>
+            <button
+              onClick={() => setIsReviewOpen(true)}
+              className="rounded-xl bg-indigo-600 px-5 py-3 font-bold text-white transition hover:bg-indigo-500"
+            >
+              Write a Review
+            </button>
           </div>
 
           <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
-
             {/* Rating Summary */}
 
             <div className="rounded-2xl border border-slate-200 bg-white p-6">
-
               <div className="text-center">
-
                 <p className="text-5xl font-black text-slate-900">
                   {Number(ratingsAverage || 0).toFixed(1)}
                 </p>
 
                 <div className="mt-3 flex justify-center gap-1">
-
                   {[1, 2, 3, 4, 5].map((star) => (
                     <Star
                       key={star}
@@ -605,46 +519,36 @@ export default function ProductDetailsClient({
                       }
                     />
                   ))}
-
                 </div>
 
                 <p className="mt-3 text-sm text-slate-400">
                   Based on {ratingsQuantity || 0} reviews
                 </p>
-
               </div>
-
             </div>
 
             {/* Reviews */}
 
             <div className="space-y-4">
-
               {reviews?.length ? (
                 reviews.map((review: any) => (
                   <div
                     key={review._id}
                     className="rounded-2xl border border-slate-200 bg-white p-5"
                   >
-
                     <div className="flex items-start justify-between gap-4">
-
                       <div>
-
                         <p className="font-bold text-slate-900">
                           {review.user?.name || "Customer"}
                         </p>
 
                         <div className="mt-2 flex gap-1">
-
                           {[1, 2, 3, 4, 5].map((star) => (
                             <Star
                               key={star}
                               size={14}
                               fill={
-                                star <= review.rating
-                                  ? "currentColor"
-                                  : "none"
+                                star <= review.rating ? "currentColor" : "none"
                               }
                               className={
                                 star <= review.rating
@@ -653,45 +557,39 @@ export default function ProductDetailsClient({
                               }
                             />
                           ))}
-
                         </div>
-
                       </div>
 
                       <span className="text-xs text-slate-400">
-                        {new Date(
-                          review.createdAt
-                        ).toLocaleDateString()}
+                        {new Date(review.createdAt).toLocaleDateString()}
                       </span>
-
                     </div>
 
                     <p className="mt-4 text-sm leading-6 text-slate-500">
                       {review.review}
                     </p>
-
                   </div>
                 ))
               ) : (
                 <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
-                  <p className="font-semibold text-slate-700">
-                    No reviews yet
-                  </p>
+                  <p className="font-semibold text-slate-700">No reviews yet</p>
 
                   <p className="mt-1 text-sm text-slate-400">
                     Be the first to review this product.
                   </p>
                 </div>
               )}
-
             </div>
-
           </div>
-
         </section>
-
       </section>
-
+      <AddReview
+        isOpen={isReviewOpen}
+        onClose={() => setIsReviewOpen(false)}
+        onSubmit={(data) => {
+          console.log(data);
+        }}
+      />{" "}
     </main>
   );
 }
