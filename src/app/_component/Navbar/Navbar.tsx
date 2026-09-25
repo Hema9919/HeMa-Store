@@ -17,11 +17,12 @@ import {
   MapPin,
   User,
   LogOut,
+  Box,
 } from "lucide-react";
 
 type NavLink = {
-name: string;
-href: string;
+  name: string;
+  href: string;
 };
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -50,7 +51,7 @@ export default function Navbar() {
     },
   ];
 
-  const isActive = (href:string) => {
+  const isActive = (href: string) => {
     if (href === "/") {
       return pathname === "/";
     }
@@ -60,25 +61,20 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white">
-
       {/* ================= TOP BAR ================= */}
 
       <div className="hidden border-b border-slate-100 bg-slate-950 text-slate-300 md:block">
         <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-6 text-xs">
-
           {/* Contact */}
 
           <div className="flex items-center gap-5">
-
             <a
               href="tel:+201000000000"
               className="flex items-center gap-2 transition hover:text-white"
             >
               <Phone size={14} />
 
-              <span>
-                +20 100 000 0000
-              </span>
+              <span>+20 100 000 0000</span>
             </a>
 
             <span className="h-4 w-px bg-slate-700" />
@@ -86,11 +82,8 @@ export default function Navbar() {
             <div className="flex items-center gap-2">
               <MapPin size={14} />
 
-              <span>
-                Cairo, Egypt
-              </span>
+              <span>Cairo, Egypt</span>
             </div>
-
           </div>
 
           {/* Auth */}
@@ -105,9 +98,15 @@ export default function Navbar() {
                   <User size={13} />
                   <span>Hi, {session?.user?.name || "My Account"}</span>
                 </Link>
-
                 <span className="text-slate-700">|</span>
-
+                <Link
+                  className="flex items-center gap-1.5 font-medium text-white transition hover:text-indigo-400"
+                  href="/my-orders"
+                >
+                  <Box size={13} />
+                  <span>My Orders</span>
+                </Link>
+                <span className="text-slate-700">|</span>
                 <button
                   type="button"
                   onClick={() => signOut({ callbackUrl: "/login" })}
@@ -119,16 +118,11 @@ export default function Navbar() {
               </div>
             ) : (
               <>
-                <Link
-                  href="/login"
-                  className="transition hover:text-white"
-                >
+                <Link href="/login" className="transition hover:text-white">
                   Login
                 </Link>
 
-                <span className="text-slate-700">
-                  |
-                </span>
+                <span className="text-slate-700">|</span>
 
                 <Link
                   href="/register"
@@ -139,22 +133,16 @@ export default function Navbar() {
               </>
             )}
           </div>
-
         </div>
       </div>
 
       {/* ================= MAIN NAVBAR ================= */}
 
       <div className="border-b border-slate-100 bg-white/95 backdrop-blur-md">
-
         <div className="mx-auto flex h-24 max-w-7xl items-center justify-between px-6">
-
           {/* ================= LOGO ================= */}
 
-          <Link
-            href="/"
-            className="flex shrink-0 items-center"
-          >
+          <Link href="/" className="flex shrink-0 items-center">
             <Image
               src="/assets/HeMa.png"
               alt="HeMa Store"
@@ -168,7 +156,6 @@ export default function Navbar() {
           {/* ================= DESKTOP NAVIGATION ================= */}
 
           <nav className="hidden items-center gap-10 md:flex">
-
             {navLinks.map((link) => {
               const active = isActive(link.href);
 
@@ -196,23 +183,17 @@ export default function Navbar() {
                       -translate-x-1/2 rounded-full
                       bg-indigo-600
                       transition-all duration-300
-                      ${
-                        active
-                          ? "w-full opacity-100"
-                          : "w-0 opacity-0"
-                      }
+                      ${active ? "w-full opacity-100" : "w-0 opacity-0"}
                     `}
                   />
                 </Link>
               );
             })}
-
           </nav>
 
           {/* ================= ACTIONS ================= */}
 
           <div className="flex items-center gap-2">
-
             {/* Wishlist */}
 
             <Link
@@ -269,9 +250,6 @@ export default function Navbar() {
               </span>
             </Link>
 
-<Link href="/my-orders">
-  My Orders
-</Link>
             {/* Mobile Menu */}
 
             <button
@@ -279,15 +257,9 @@ export default function Navbar() {
               className="ml-1 flex h-12 w-12 items-center justify-center rounded-full text-slate-700 transition hover:bg-slate-100 md:hidden"
               aria-label="Toggle menu"
             >
-              {isMenuOpen ? (
-                <X size={23} />
-              ) : (
-                <Menu size={23} />
-              )}
+              {isMenuOpen ? <X size={23} /> : <Menu size={23} />}
             </button>
-
           </div>
-
         </div>
       </div>
 
@@ -295,9 +267,7 @@ export default function Navbar() {
 
       {isMenuOpen && (
         <div className="border-b border-slate-100 bg-white shadow-lg md:hidden">
-
           <nav className="mx-auto flex max-w-7xl flex-col px-6 py-4">
-
             {navLinks.map((link) => {
               const active = isActive(link.href);
 
@@ -335,7 +305,13 @@ export default function Navbar() {
                     <User size={18} className="text-indigo-600" />
                     <span>My Profile ({session?.user?.name || "Account"})</span>
                   </Link>
-
+       <Link
+                  className="flex items-center gap-1.5 font-medium text-white transition hover:text-indigo-400"
+                  href="/my-orders"
+                >
+                  <Box size={13} />
+                  <span>My Orders</span>
+                </Link>
                   <button
                     type="button"
                     onClick={() => {
@@ -384,12 +360,9 @@ export default function Navbar() {
                 </>
               )}
             </div>
-
           </nav>
-
         </div>
       )}
-
     </header>
   );
 }
