@@ -4,14 +4,13 @@ import type {
   UserOrdersResponse,
 } from "../types/orderTypes";
 
-const BASE_URL =
-  "https://ecommerce.routemisr.com/api/v1/orders";
+const BASE_URL = "https://ecommerce.routemisr.com/api/v1/orders";
 
 // Create Cash Order
 export async function createCashOrder(
   cartId: string,
   token: string,
-  shippingAddress: ShippingAddress
+  shippingAddress: ShippingAddress,
 ): Promise<CreateOrderResponse> {
   const response = await fetch(`${BASE_URL}/${cartId}`, {
     method: "POST",
@@ -27,9 +26,7 @@ export async function createCashOrder(
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(
-      data.message || "Failed to create order"
-    );
+    throw new Error(data.message || "Failed to create order");
   }
 
   return data;
@@ -38,25 +35,20 @@ export async function createCashOrder(
 // Get User Orders
 export async function getUserOrders(
   userId: string,
-  token: string
+  token: string,
 ): Promise<UserOrdersResponse> {
-  const response = await fetch(
-    `${BASE_URL}/user/${userId}`,
-    {
-      method: "GET",
-      headers: {
-        token,
-      },
-      cache: "no-store",
-    }
-  );
+  const response = await fetch(`${BASE_URL}/user/${userId}`, {
+    method: "GET",
+    headers: {
+      token,
+    },
+    cache: "no-store",
+  });
 
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(
-      data.message || "Failed to fetch orders"
-    );
+    throw new Error(data.message || "Failed to fetch orders");
   }
 
   return data;
@@ -72,16 +64,12 @@ export interface CheckoutSessionResponse {
 export async function createCheckoutSession(
   cartId: string,
   token: string,
-  shippingAddress: ShippingAddress
+  shippingAddress: ShippingAddress,
 ): Promise<CheckoutSessionResponse> {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL ||
-    window.location.origin;
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin;
 
   const response = await fetch(
-    `${BASE_URL}/checkout-session/${cartId}?url=${encodeURIComponent(
-      baseUrl
-    )}`,
+    `${BASE_URL}/checkout-session/${cartId}?url=${encodeURIComponent(baseUrl)}`,
     {
       method: "POST",
       headers: {
@@ -91,15 +79,13 @@ export async function createCheckoutSession(
       body: JSON.stringify({
         shippingAddress,
       }),
-    }
+    },
   );
 
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(
-      data.message || "Failed to create checkout session"
-    );
+    throw new Error(data.message || "Failed to create checkout session");
   }
 
   return data;

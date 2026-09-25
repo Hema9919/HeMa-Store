@@ -46,9 +46,7 @@ export default function OrderDetails() {
 
         const orders = await getUserOrders(userId, token);
 
-        const foundOrder = orders.find(
-          (item) => item._id === orderId
-        );
+        const foundOrder = orders.find((item) => item._id === orderId);
 
         if (!foundOrder) {
           toast.error("Order not found");
@@ -61,9 +59,7 @@ export default function OrderDetails() {
         console.error("Get order details error:", error);
 
         toast.error(
-          error instanceof Error
-            ? error.message
-            : "Failed to load order"
+          error instanceof Error ? error.message : "Failed to load order",
         );
       } finally {
         setIsLoading(false);
@@ -91,10 +87,7 @@ export default function OrderDetails() {
     return (
       <main className="flex min-h-[70vh] items-center justify-center px-4">
         <div className="text-center">
-          <Package
-            size={48}
-            className="mx-auto text-slate-300"
-          />
+          <Package size={48} className="mx-auto text-slate-300" />
 
           <h1 className="mt-5 text-2xl font-black text-slate-900">
             Please Login
@@ -119,10 +112,7 @@ export default function OrderDetails() {
     return (
       <main className="flex min-h-[70vh] items-center justify-center px-4">
         <div className="text-center">
-          <Package
-            size={48}
-            className="mx-auto text-slate-300"
-          />
+          <Package size={48} className="mx-auto text-slate-300" />
 
           <h1 className="mt-5 text-2xl font-black text-slate-900">
             Order Not Found
@@ -144,17 +134,13 @@ export default function OrderDetails() {
     );
   }
 
-  const formattedDate = new Date(
-    order.createdAt
-  ).toLocaleDateString("en-US", {
+  const formattedDate = new Date(order.createdAt).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
   });
 
-  const formattedTime = new Date(
-    order.createdAt
-  ).toLocaleTimeString("en-US", {
+  const formattedTime = new Date(order.createdAt).toLocaleTimeString("en-US", {
     hour: "2-digit",
     minute: "2-digit",
   });
@@ -225,15 +211,11 @@ export default function OrderDetails() {
                 </div>
 
                 <div>
-                  <h2 className="font-black text-slate-900">
-                    Order Items
-                  </h2>
+                  <h2 className="font-black text-slate-900">Order Items</h2>
 
                   <p className="text-sm text-slate-500">
                     {order.cartItems.length}{" "}
-                    {order.cartItems.length === 1
-                      ? "item"
-                      : "items"}
+                    {order.cartItems.length === 1 ? "item" : "items"}
                   </p>
                 </div>
               </div>
@@ -272,8 +254,7 @@ export default function OrderDetails() {
 
                     <div className="shrink-0 text-right">
                       <p className="font-black text-slate-900">
-                        {(item.price * item.count).toLocaleString()}{" "}
-                        EGP
+                        {(item.price * item.count).toLocaleString()} EGP
                       </p>
                     </div>
                   </div>
@@ -293,9 +274,7 @@ export default function OrderDetails() {
                     Shipping Address
                   </h2>
 
-                  <p className="text-sm text-slate-500">
-                    Delivery information
-                  </p>
+                  <p className="text-sm text-slate-500">Delivery information</p>
                 </div>
               </div>
 
@@ -326,20 +305,14 @@ export default function OrderDetails() {
                 </div>
 
                 <div>
-                  <h2 className="font-black text-slate-900">
-                    Payment
-                  </h2>
+                  <h2 className="font-black text-slate-900">Payment</h2>
 
-                  <p className="text-sm text-slate-500">
-                    Payment information
-                  </p>
+                  <p className="text-sm text-slate-500">Payment information</p>
                 </div>
               </div>
 
               <div className="mt-5 flex items-center justify-between border-b border-slate-100 pb-4">
-                <span className="text-sm text-slate-500">
-                  Method
-                </span>
+                <span className="text-sm text-slate-500">Method</span>
 
                 <span className="font-bold capitalize text-slate-900">
                   {order.paymentMethodType}
@@ -347,9 +320,7 @@ export default function OrderDetails() {
               </div>
 
               <div className="flex items-center justify-between pt-4">
-                <span className="text-sm text-slate-500">
-                  Payment Status
-                </span>
+                <span className="text-sm text-slate-500">Payment Status</span>
 
                 <span
                   className={`rounded-full px-3 py-1 text-xs font-bold ${
@@ -365,15 +336,11 @@ export default function OrderDetails() {
 
             {/* Summary */}
             <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h2 className="font-black text-slate-900">
-                Order Summary
-              </h2>
+              <h2 className="font-black text-slate-900">Order Summary</h2>
 
               <div className="mt-5 space-y-4 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-slate-500">
-                    Subtotal
-                  </span>
+                  <span className="text-slate-500">Subtotal</span>
 
                   <span className="font-bold text-slate-900">
                     {(
@@ -386,9 +353,7 @@ export default function OrderDetails() {
                 </div>
 
                 <div className="flex justify-between">
-                  <span className="text-slate-500">
-                    Shipping
-                  </span>
+                  <span className="text-slate-500">Shipping</span>
 
                   <span className="font-bold text-slate-900">
                     {order.shippingPrice.toLocaleString()} EGP
@@ -396,9 +361,7 @@ export default function OrderDetails() {
                 </div>
 
                 <div className="flex justify-between">
-                  <span className="text-slate-500">
-                    Tax
-                  </span>
+                  <span className="text-slate-500">Tax</span>
 
                   <span className="font-bold text-slate-900">
                     {order.taxPrice.toLocaleString()} EGP
@@ -407,9 +370,7 @@ export default function OrderDetails() {
 
                 <div className="border-t border-slate-100 pt-4">
                   <div className="flex items-center justify-between">
-                    <span className="font-black text-slate-900">
-                      Total
-                    </span>
+                    <span className="font-black text-slate-900">Total</span>
 
                     <span className="text-xl font-black text-indigo-600">
                       {order.totalOrderPrice.toLocaleString()} EGP
