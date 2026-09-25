@@ -4,7 +4,19 @@ import { ArrowUpRight, Sparkles } from "lucide-react";
 
 import { getBrands } from "@/api/services/brandsApi";
 import MainTitle from "../_component/Maintitle/MainTitle";
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Brands",
+  description:
+    "Discover popular brands and explore their products at HeMa Store.",
+  openGraph: {
+    title: "Brands | HeMa Store",
+    description:
+      "Explore products from popular brands at HeMa Store.",
+    url: "/brands",
+  },
+};
 export default async function Brands() {
   const brands = await getBrands();
 

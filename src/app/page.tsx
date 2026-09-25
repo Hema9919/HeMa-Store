@@ -8,6 +8,19 @@ const ShopCategory = dynamic(
     loading: () => <div>..Loading</div>,
   }
 );
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Home",
+  description:
+    "Welcome to HeMa Store. Shop quality products, discover great deals, and enjoy a secure online shopping experience.",
+  openGraph: {
+    title: "HeMa Store | Online Shopping",
+    description:
+      "Shop quality products and discover great deals at HeMa Store.",
+    url: "/",
+  },
+};
 export default function Home() {
   return (
     <>
