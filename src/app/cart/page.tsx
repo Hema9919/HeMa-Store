@@ -35,7 +35,9 @@ export default function CartPage() {
       <main className="flex min-h-[70vh] items-center justify-center bg-slate-50">
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="h-10 w-10 animate-spin text-indigo-600" />
-          <p className="text-sm font-medium text-slate-500">Loading your cart...</p>
+          <p className="text-sm font-medium text-slate-500">
+            Loading your cart...
+          </p>
         </div>
       </main>
     );
@@ -52,7 +54,8 @@ export default function CartPage() {
             Sign In to View Your Cart
           </h1>
           <p className="mt-2 text-sm text-slate-500">
-            Please log in to your account to view saved items in your shopping cart.
+            Please log in to your account to view saved items in your shopping
+            cart.
           </p>
           <Link
             href="/login"
@@ -109,7 +112,8 @@ export default function CartPage() {
                 Shopping Cart
               </h1>
               <p className="mt-1 text-sm text-slate-500">
-                You have {cartCount} {cartCount === 1 ? "item" : "items"} in your cart.
+                You have {cartCount} {cartCount === 1 ? "item" : "items"} in
+                your cart.
               </p>
             </div>
 
@@ -245,7 +249,9 @@ export default function CartPage() {
                 </div>
                 <div className="flex justify-between text-slate-600">
                   <span>Taxes</span>
-                  <span className="text-xs text-slate-400">Calculated at checkout</span>
+                  <span className="text-xs text-slate-400">
+                    Calculated at checkout
+                  </span>
                 </div>
               </div>
 
@@ -255,15 +261,12 @@ export default function CartPage() {
                   ${totalCartPrice}
                 </span>
               </div>
-
-              <button
-                type="button"
-                className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 py-4 text-sm font-bold text-white shadow-lg shadow-indigo-200 transition hover:bg-indigo-700 active:scale-95"
-              >
-                <span>Proceed to Checkout</span>
-                <ArrowRight size={17} />
-              </button>
-
+              <Link href="/checkout">
+                <button type="button">
+                  <span>Proceed to Checkout</span>
+                  <ArrowRight size={17} />
+                </button>
+              </Link>
               <div className="mt-5 flex items-center justify-center gap-2 text-xs text-slate-400">
                 <ShieldCheck size={16} className="text-emerald-500" />
                 <span>Secure Checkout with 100% Protection</span>
