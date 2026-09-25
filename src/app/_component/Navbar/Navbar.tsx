@@ -269,6 +269,9 @@ export default function Navbar() {
               </span>
             </Link>
 
+<Link href="/my-orders">
+  My Orders
+</Link>
             {/* Mobile Menu */}
 
             <button
