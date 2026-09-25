@@ -487,7 +487,20 @@ export default function ProductDetailsClient({
             </div>
             <button
               onClick={() => setIsReviewOpen(true)}
-              className="rounded-xl bg-indigo-600 px-5 py-3 font-bold text-white transition hover:bg-indigo-500"
+              className="
+                  flex h-14 flex-1 items-center justify-center
+                  gap-3 rounded-xl bg-indigo-600
+                  px-6 text-sm font-bold text-white
+                  shadow-lg shadow-indigo-200
+                  transition-all duration-300
+                  hover:bg-indigo-700
+                  hover:shadow-xl hover:shadow-indigo-300
+                  active:scale-[0.99]
+                  disabled:cursor-not-allowed
+                  disabled:bg-slate-200
+                  disabled:text-slate-400
+                  disabled:shadow-none
+                "
             >
               Write a Review
             </button>
