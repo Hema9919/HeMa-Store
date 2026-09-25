@@ -66,7 +66,8 @@ export default function ProfilePage() {
             Sign In to View Profile
           </h1>
           <p className="mt-2 text-sm text-slate-500">
-            Please log in to your account to manage your profile and security settings.
+            Please log in to your account to manage your profile and security
+            settings.
           </p>
           <button
             onClick={() => router.push("/login")}
@@ -87,7 +88,9 @@ export default function ProfilePage() {
     if (!token) return;
 
     if (!name || !email || !phone) {
-      toast.error("Please fill in all fields (Name, Email, and Egyptian Phone)");
+      toast.error(
+        "Please fill in all fields (Name, Email, and Egyptian Phone)",
+      );
       return;
     }
 
@@ -133,7 +136,7 @@ export default function ProfilePage() {
           password: newPassword,
           rePassword,
         },
-        token
+        token,
       );
       toast.success(res.message || "Password updated successfully!");
       setCurrentPassword("");
@@ -276,7 +279,22 @@ export default function ProfilePage() {
                     </div>
                   </div>
 
-       
+                  <div>
+                    <label className="mb-2 block text-sm font-semibold text-slate-700">
+                      Phone
+                    </label>
+                    <div className="relative">
+                      <Mail className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
+                      <input
+                        type="number"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        required
+                        placeholder="0100010010"
+                        className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 pl-12 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-500/10"
+                      />
+                    </div>
+                  </div>
 
                   <button
                     type="submit"
@@ -304,11 +322,15 @@ export default function ProfilePage() {
                     Change Password
                   </h2>
                   <p className="mt-1 text-xs text-slate-400">
-                    Ensure your account is using a long, random password to stay secure.
+                    Ensure your account is using a long, random password to stay
+                    secure.
                   </p>
                 </div>
 
-                <form onSubmit={handleUpdatePassword} className="mt-6 space-y-5">
+                <form
+                  onSubmit={handleUpdatePassword}
+                  className="mt-6 space-y-5"
+                >
                   <div>
                     <label className="mb-2 block text-sm font-semibold text-slate-700">
                       Current Password
