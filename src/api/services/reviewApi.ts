@@ -1,13 +1,13 @@
 import { WishlistResponse } from "../types/cartWishlistTypes";
 
-const BASE_URL = "https://ecommerce.routemisr.com/api/v1/wishlist";
+const BASE_URL = "https://ecommerce.routemisr.com/api/v1/products/";
 
-// 1. Add Product to Wishlist
-export async function addToWishlist(
+// 1. Add Reviews
+export async function addReviews(
   productId: string,
   token: string
 ): Promise<WishlistResponse> {
-  const response = await fetch(BASE_URL, {
+  const response = await fetch(`${BASE_URL}${productId}/reviews`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

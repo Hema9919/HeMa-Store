@@ -475,37 +475,37 @@ export default function ProductDetailsClient({
         {/* ================= REVIEWS ================= */}
 
         <section className="mt-16 border-t border-slate-200 pt-12">
-          <div className="flex justify-between">
-            <div className="mb-8">
-              <span className="text-xs font-bold uppercase tracking-[0.2em] text-indigo-600">
-                Customer Feedback
-              </span>
+      <div className="flex items-center justify-between gap-6">
+  <div className="mb-8">
+    <span className="text-xs font-bold uppercase tracking-[0.2em] text-indigo-600">
+      Customer Feedback
+    </span>
 
-              <h2 className="mt-2 text-2xl font-extrabold text-slate-900 sm:text-3xl">
-                Customer Reviews
-              </h2>
-            </div>
-            <button
-              onClick={() => setIsReviewOpen(true)}
-              className="
-                  flex h-14 flex-1 items-center justify-center
-                  gap-3 rounded-xl bg-indigo-600
-                  px-6 text-sm font-bold text-white
-                  shadow-lg shadow-indigo-200
-                  transition-all duration-300
-                  hover:bg-indigo-700
-                  hover:shadow-xl hover:shadow-indigo-300
-                  active:scale-[0.99]
-                  disabled:cursor-not-allowed
-                  disabled:bg-slate-200
-                  disabled:text-slate-400
-                  disabled:shadow-none
-                "
-            >
-              Write a Review
-            </button>
-          </div>
+    <h2 className="mt-2 text-2xl font-extrabold text-slate-900 sm:text-3xl">
+      Customer Reviews
+    </h2>
+  </div>
 
+  <button
+    onClick={() => setIsReviewOpen(true)}
+    className="
+      flex h-14 shrink-0 items-center justify-center
+      gap-3 rounded-xl bg-indigo-600
+      px-6 text-sm font-bold text-white
+      shadow-lg shadow-indigo-200
+      transition-all duration-300
+      hover:bg-indigo-700
+      hover:shadow-xl hover:shadow-indigo-300
+      active:scale-[0.99]
+      disabled:cursor-not-allowed
+      disabled:bg-slate-200
+      disabled:text-slate-400
+      disabled:shadow-none
+    "
+  >
+    Write a Review
+  </button>
+</div>
           <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
             {/* Rating Summary */}
 
