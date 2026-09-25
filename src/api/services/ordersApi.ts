@@ -61,3 +61,46 @@ export async function getUserOrders(
 
   return data;
 }
+
+export interface CheckoutSessionResponse {
+  status: string;
+  session: {
+    url: string;
+  };
+}
+
+export async function createCheckoutSession(
+  cartId: string,
+  token: string,
+  shippingAddress: ShippingAddress
+): Promise<CheckoutSessionResponse> {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    window.location.origin;
+
+  const response = await fetch(
+    `${BASE_URL}/checkout-session/${cartId}?url=${encodeURIComponent(
+      baseUrl
+    )}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        token,
+      },
+      body: JSON.stringify({
+        shippingAddress,
+      }),
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.message || "Failed to create checkout session"
+    );
+  }
+
+  return data;
+}

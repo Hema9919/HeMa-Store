@@ -16,7 +16,10 @@ import {
 } from "lucide-react";
 
 import { useCart } from "@/context/CartContext";
-import { createCashOrder } from "@/api/services/ordersApi";
+import {
+  createCashOrder,
+  createCheckoutSession,
+} from "@/api/services/ordersApi";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -34,21 +37,20 @@ export default function CheckoutPage() {
   const [details, setDetails] = useState("");
   const [phone, setPhone] = useState("");
   const [city, setCity] = useState("Cairo");
-
+  const [paymentMethod, setPaymentMethod] = useState<"cash" | "stripe">("cash");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const token = session?.accessToken;
 
   const items = cart?.products || [];
 
-  const handleSubmit = async (
-    event: React.FormEvent<HTMLFormElement>
-  ) => {
-    event.preventDefault();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const token = session?.accessToken;
 
     if (!token) {
       toast.error("Please login first");
-      router.push("/login");
       return;
     }
 
@@ -57,60 +59,53 @@ export default function CheckoutPage() {
       return;
     }
 
-    if (!details.trim()) {
-      toast.error("Please enter your address");
-      return;
-    }
-
-    if (!phone.trim()) {
-      toast.error("Please enter your phone number");
-      return;
-    }
-
-    if (!city.trim()) {
-      toast.error("Please enter your city");
+    if (!details.trim() || !phone.trim() || !city.trim()) {
+      toast.error("Please fill in all shipping information");
       return;
     }
 
     try {
       setIsSubmitting(true);
 
-      const response = await createCashOrder(
-        cart._id,
-        token,
-        {
-          details: details.trim(),
-          phone: phone.trim(),
-          city: city.trim(),
-        }
-      );
+      const shippingAddress = {
+        details: details.trim(),
+        phone: phone.trim(),
+        city: city.trim(),
+      };
 
-      console.log("ORDER CREATED:", response);
+      if (paymentMethod === "cash") {
+        await createCashOrder(cart._id, token, shippingAddress);
 
-      const cartCleared = await clearCartAction();
+        await clearCartAction();
 
-      if (!cartCleared) {
-        console.warn(
-          "Order created but cart could not be cleared"
-        );
+        toast.success("Order placed successfully!");
+
+        router.push("/order-success");
+
+        return;
       }
 
-      toast.success("Order placed successfully!");
+      const response = await createCheckoutSession(
+        cart._id,
+        token,
+        shippingAddress,
+      );
 
-      router.push("/order-success");
+      if (!response?.session?.url) {
+        throw new Error("Stripe checkout URL was not returned");
+      }
+
+      window.location.href = response.session.url;
     } catch (error) {
-      console.error("Create order error:", error);
+      console.error("Checkout error:", error);
 
       toast.error(
-        error instanceof Error
-          ? error.message
-          : "Failed to place order"
+        error instanceof Error ? error.message : "Something went wrong",
       );
     } finally {
       setIsSubmitting(false);
     }
   };
-
   if (status === "loading" || isCartLoading) {
     return (
       <main className="flex min-h-[70vh] items-center justify-center bg-slate-50">
@@ -240,9 +235,7 @@ export default function CheckoutPage() {
                   <textarea
                     id="details"
                     value={details}
-                    onChange={(event) =>
-                      setDetails(event.target.value)
-                    }
+                    onChange={(event) => setDetails(event.target.value)}
                     placeholder="Enter your full address..."
                     rows={4}
                     disabled={isSubmitting}
@@ -270,9 +263,7 @@ export default function CheckoutPage() {
                         id="phone"
                         type="tel"
                         value={phone}
-                        onChange={(event) =>
-                          setPhone(event.target.value)
-                        }
+                        onChange={(event) => setPhone(event.target.value)}
                         placeholder="010xxxxxxxx"
                         disabled={isSubmitting}
                         className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-11 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-50 disabled:cursor-not-allowed disabled:opacity-60"
@@ -293,9 +284,7 @@ export default function CheckoutPage() {
                       id="city"
                       type="text"
                       value={city}
-                      onChange={(event) =>
-                        setCity(event.target.value)
-                      }
+                      onChange={(event) => setCity(event.target.value)}
                       placeholder="Cairo"
                       disabled={isSubmitting}
                       className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-50 disabled:cursor-not-allowed disabled:opacity-60"
@@ -316,8 +305,7 @@ export default function CheckoutPage() {
               <div className="mt-5 space-y-4 border-b border-slate-100 pb-5">
                 <div className="flex justify-between text-sm text-slate-600">
                   <span>
-                    {cartCount}{" "}
-                    {cartCount === 1 ? "Item" : "Items"}
+                    {cartCount} {cartCount === 1 ? "Item" : "Items"}
                   </span>
 
                   <span className="font-bold text-slate-900">
@@ -328,9 +316,7 @@ export default function CheckoutPage() {
                 <div className="flex justify-between text-sm text-slate-600">
                   <span>Shipping</span>
 
-                  <span className="font-bold text-emerald-600">
-                    Free
-                  </span>
+                  <span className="font-bold text-emerald-600">Free</span>
                 </div>
               </div>
 
@@ -343,7 +329,45 @@ export default function CheckoutPage() {
                   ${totalCartPrice}
                 </span>
               </div>
+              <div className="mt-8">
+                <h2 className="mb-4 text-lg font-black text-slate-900">
+                  Payment Method
+                </h2>
 
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <button
+                    type="button"
+                    onClick={() => setPaymentMethod("cash")}
+                    className={`rounded-xl border p-4 text-left transition ${
+                      paymentMethod === "cash"
+                        ? "border-indigo-600 bg-indigo-50"
+                        : "border-slate-200 bg-white hover:border-indigo-300"
+                    }`}
+                  >
+                    <p className="font-bold text-slate-900">Cash on Delivery</p>
+
+                    <p className="mt-1 text-xs text-slate-500">
+                      Pay when your order arrives
+                    </p>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setPaymentMethod("stripe")}
+                    className={`rounded-xl border p-4 text-left transition ${
+                      paymentMethod === "stripe"
+                        ? "border-indigo-600 bg-indigo-50"
+                        : "border-slate-200 bg-white hover:border-indigo-300"
+                    }`}
+                  >
+                    <p className="font-bold text-slate-900">Pay with Stripe</p>
+
+                    <p className="mt-1 text-xs text-slate-500">
+                      Secure online payment
+                    </p>
+                  </button>
+                </div>
+              </div>
               <button
                 type="submit"
                 disabled={isSubmitting}
@@ -351,10 +375,7 @@ export default function CheckoutPage() {
               >
                 {isSubmitting ? (
                   <>
-                    <Loader2
-                      size={18}
-                      className="animate-spin"
-                    />
+                    <Loader2 size={18} className="animate-spin" />
 
                     <span>Placing Order...</span>
                   </>
@@ -367,10 +388,7 @@ export default function CheckoutPage() {
               </button>
 
               <div className="mt-5 flex items-center justify-center gap-2 text-xs text-slate-400">
-                <ShieldCheck
-                  size={16}
-                  className="text-emerald-500"
-                />
+                <ShieldCheck size={16} className="text-emerald-500" />
 
                 <span>Secure Checkout</span>
               </div>
