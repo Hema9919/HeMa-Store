@@ -261,11 +261,12 @@ export default function CartPage() {
                   ${totalCartPrice}
                 </span>
               </div>
-              <Link href="/checkout">
-                <button type="button">
-                  <span>Proceed to Checkout</span>
-                  <ArrowRight size={17} />
-                </button>
+              <Link
+                href="/checkout"
+                className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 py-4 text-sm font-bold text-white shadow-lg shadow-indigo-200 transition hover:bg-indigo-700 active:scale-95"
+              >
+                <span>Proceed to Checkout</span>
+                <ArrowRight size={17} />
               </Link>
               <div className="mt-5 flex items-center justify-center gap-2 text-xs text-slate-400">
                 <ShieldCheck size={16} className="text-emerald-500" />
