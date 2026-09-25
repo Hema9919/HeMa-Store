@@ -259,52 +259,83 @@ export default function ProductDetailsClient({
   // Delete Review
   // =========================
 
-  const handleDeleteReview = async (
-    reviewId: string
-  ) => {
-    const token = session?.accessToken;
+  // const handleDeleteReview = async (
+  //   reviewId: string
+  // ) => {
+  //   const token = session?.accessToken;
 
-    if (!token) {
-      toast.error("Please login first");
-      return;
-    }
+  //   if (!token) {
+  //     toast.error("Please login first");
+  //     return;
+  //   }
 
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this review?"
+  //   const confirmed = window.confirm(
+  //     "Are you sure you want to delete this review?"
+  //   );
+
+  //   if (!confirmed) {
+  //     return;
+  //   }
+
+  //   try {
+  //     await deleteReview(
+  //       reviewId,
+  //       token
+  //     );
+
+  //     toast.success(
+  //       "Review deleted successfully"
+  //     );
+
+  //     // Refresh reviews
+  //     const response = await getProductReviews(productId);
+
+  //     setProductReviews(response.data || []);
+  //   } catch (error) {
+  //     console.error(
+  //       "Delete review error:",
+  //       error
+  //     );
+
+  //     toast.error(
+  //       error instanceof Error
+  //         ? error.message
+  //         : "Failed to delete review"
+  //     );
+  //   }
+  // };
+const handleDeleteReview = async (reviewId: string) => {
+  const token = session?.accessToken;
+
+  if (!token) {
+    toast.error("Please login first");
+    return;
+  }
+
+  const confirmed = window.confirm(
+    "Are you sure you want to delete this review?"
+  );
+
+  if (!confirmed) return;
+
+  try {
+    await deleteReview(reviewId, token);
+
+    toast.success("Review deleted successfully");
+
+    const response = await getProductReviews(productId);
+
+    setProductReviews(response.data || []);
+  } catch (error) {
+    console.error("Delete review error:", error);
+
+    toast.error(
+      error instanceof Error
+        ? error.message
+        : "Failed to delete review"
     );
-
-    if (!confirmed) {
-      return;
-    }
-
-    try {
-      await deleteReview(
-        reviewId,
-        token
-      );
-
-      toast.success(
-        "Review deleted successfully"
-      );
-
-      // Refresh reviews
-      const response = await getProductReviews(productId);
-
-      setProductReviews(response.data || []);
-    } catch (error) {
-      console.error(
-        "Delete review error:",
-        error
-      );
-
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : "Failed to delete review"
-      );
-    }
-  };
-
+  }
+};
   // =========================
   // Wishlist
   // =========================

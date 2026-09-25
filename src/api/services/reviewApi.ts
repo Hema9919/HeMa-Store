@@ -105,10 +105,33 @@ export async function updateReview(
 // Delete Review
 // =========================
 
+// export async function deleteReview(
+//   reviewId: string,
+//   token: string
+// ): Promise<{ message?: string }> {
+//   const response = await fetch(
+//     `${REVIEWS_URL}/${reviewId}`,
+//     {
+//       method: "DELETE",
+//       headers: {
+//         token,
+//       },
+//     }
+//   );
+
+//   const data = await response.json();
+
+//   if (!response.ok) {
+//     throw new Error(data.message || "Failed to delete review");
+//   }
+
+//   return data;
+// }
+// Delete Review
 export async function deleteReview(
   reviewId: string,
   token: string
-): Promise<{ message?: string }> {
+) {
   const response = await fetch(
     `${REVIEWS_URL}/${reviewId}`,
     {
@@ -119,11 +142,19 @@ export async function deleteReview(
     }
   );
 
-  const data = await response.json();
-
   if (!response.ok) {
-    throw new Error(data.message || "Failed to delete review");
+    let message = "Failed to delete review";
+
+    try {
+      const data = await response.json();
+      message = data.message || message;
+    } catch {
+      // Response has no JSON body
+    }
+
+    throw new Error(message);
   }
 
-  return data;
+  // DELETE API may return an empty response
+  return true;
 }
