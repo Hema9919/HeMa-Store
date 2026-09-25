@@ -42,21 +42,16 @@ export default function MyOrdersPage() {
       try {
         setIsLoading(true);
 
-      const response = await getUserOrders(
-  userId,
-  token
-);
+        const response = await getUserOrders(userId, token);
 
-console.log("USER ORDERS:", response);
+        console.log("USER ORDERS:", response);
 
-setOrders(response);
+        setOrders(response);
       } catch (error) {
         console.error("Get orders error:", error);
 
         toast.error(
-          error instanceof Error
-            ? error.message
-            : "Failed to load orders"
+          error instanceof Error ? error.message : "Failed to load orders",
         );
       } finally {
         setIsLoading(false);
@@ -70,10 +65,7 @@ setOrders(response);
     return (
       <main className="flex min-h-[70vh] items-center justify-center bg-slate-50">
         <div className="flex flex-col items-center gap-4">
-          <Loader2
-            size={40}
-            className="animate-spin text-indigo-600"
-          />
+          <Loader2 size={40} className="animate-spin text-indigo-600" />
 
           <p className="text-sm font-medium text-slate-500">
             Loading your orders...
@@ -87,7 +79,6 @@ setOrders(response);
     return (
       <main className="flex min-h-[70vh] items-center justify-center bg-slate-50 px-4">
         <div className="max-w-md text-center">
-
           <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-indigo-50 text-indigo-600">
             <Package size={36} />
           </div>
@@ -97,8 +88,7 @@ setOrders(response);
           </h1>
 
           <p className="mt-2 text-sm leading-6 text-slate-500">
-            Please login to your account to view your
-            previous orders.
+            Please login to your account to view your previous orders.
           </p>
 
           <Link
@@ -108,7 +98,6 @@ setOrders(response);
             Login
             <ArrowRight size={16} />
           </Link>
-
         </div>
       </main>
     );
@@ -118,7 +107,6 @@ setOrders(response);
     return (
       <main className="flex min-h-[70vh] items-center justify-center bg-slate-50 px-4">
         <div className="max-w-md text-center">
-
           <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-indigo-50 text-indigo-600">
             <ShoppingBag size={36} />
           </div>
@@ -128,8 +116,8 @@ setOrders(response);
           </h1>
 
           <p className="mt-2 text-sm leading-6 text-slate-500">
-            You haven&apos;t placed any orders yet. Start
-            shopping and your orders will appear here.
+            You haven&apos;t placed any orders yet. Start shopping and your
+            orders will appear here.
           </p>
 
           <Link
@@ -139,7 +127,6 @@ setOrders(response);
             Start Shopping
             <ArrowRight size={16} />
           </Link>
-
         </div>
       </main>
     );
@@ -147,11 +134,9 @@ setOrders(response);
 
   return (
     <main className="min-h-screen bg-slate-50 pb-20">
-
       {/* Header */}
       <section className="border-b border-slate-200 bg-white">
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-
           <Link
             href="/"
             className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-indigo-600"
@@ -174,49 +159,40 @@ setOrders(response);
               Track and view your previous orders.
             </p>
           </div>
-
         </div>
       </section>
 
       {/* Orders */}
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-
         <div className="space-y-5">
-
           {orders.map((order) => {
+            const itemCount =
+              order.cartItems?.reduce((total, item) => total + item.count, 0) ??
+              0;
 
-            const itemCount = order.cartItems?.reduce(
-              (total, item) => total + item.count,
-              0
-            ) ?? 0;
-
-            const orderDate = new Date(
-              order.createdAt
-            ).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "short",
-              day: "numeric",
-            });
+            const orderDate = new Date(order.createdAt).toLocaleDateString(
+              "en-US",
+              {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              },
+            );
 
             return (
               <div
                 key={order._id}
                 className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-indigo-100 sm:p-6"
               >
-
                 {/* Top */}
                 <div className="flex flex-col gap-4 border-b border-slate-100 pb-5 sm:flex-row sm:items-center sm:justify-between">
-
                   <div>
                     <div className="flex items-center gap-2">
-                      <Package
-                        size={18}
-                        className="text-indigo-600"
-                      />
+                      <Package size={18} className="text-indigo-600" />
 
-               <span className="text-sm font-black text-slate-900">
-  Order #{order.id}
-</span>
+                      <span className="text-sm font-black text-slate-900">
+                        Order #{order.id}
+                      </span>
                     </div>
 
                     <div className="mt-2 flex items-center gap-2 text-xs text-slate-400">
@@ -234,25 +210,20 @@ setOrders(response);
                       ${order.totalOrderPrice}
                     </p>
                   </div>
-
                 </div>
 
                 {/* Info */}
                 <div className="grid grid-cols-1 gap-4 py-5 sm:grid-cols-3">
-
                   {/* Items */}
                   <div className="rounded-xl bg-slate-50 p-4">
                     <div className="flex items-center gap-2 text-slate-400">
                       <ShoppingBag size={16} />
 
-                      <span className="text-xs font-semibold">
-                        Items
-                      </span>
+                      <span className="text-xs font-semibold">Items</span>
                     </div>
 
                     <p className="mt-2 text-sm font-black text-slate-900">
-                      {itemCount}{" "}
-                      {itemCount === 1 ? "item" : "items"}
+                      {itemCount} {itemCount === 1 ? "item" : "items"}
                     </p>
                   </div>
 
@@ -261,13 +232,10 @@ setOrders(response);
                     <div className="flex items-center gap-2 text-slate-400">
                       <Clock3 size={16} />
 
-                      <span className="text-xs font-semibold">
-                        Payment
-                      </span>
+                      <span className="text-xs font-semibold">Payment</span>
                     </div>
 
                     <div className="mt-2 flex items-center gap-2">
-
                       {order.isPaid ? (
                         <>
                           <CheckCircle2
@@ -281,17 +249,13 @@ setOrders(response);
                         </>
                       ) : (
                         <>
-                          <Clock3
-                            size={15}
-                            className="text-amber-500"
-                          />
+                          <Clock3 size={15} className="text-amber-500" />
 
                           <span className="text-sm font-bold text-amber-600">
                             Not Paid
                           </span>
                         </>
                       )}
-
                     </div>
                   </div>
 
@@ -300,13 +264,10 @@ setOrders(response);
                     <div className="flex items-center gap-2 text-slate-400">
                       <Truck size={16} />
 
-                      <span className="text-xs font-semibold">
-                        Delivery
-                      </span>
+                      <span className="text-xs font-semibold">Delivery</span>
                     </div>
 
                     <div className="mt-2 flex items-center gap-2">
-
                       {order.isDelivered ? (
                         <>
                           <CheckCircle2
@@ -320,25 +281,19 @@ setOrders(response);
                         </>
                       ) : (
                         <>
-                          <Clock3
-                            size={15}
-                            className="text-amber-500"
-                          />
+                          <Clock3 size={15} className="text-amber-500" />
 
                           <span className="text-sm font-bold text-amber-600">
                             Processing
                           </span>
                         </>
                       )}
-
                     </div>
                   </div>
-
                 </div>
 
                 {/* Bottom */}
                 <div className="flex flex-col gap-4 border-t border-slate-100 pt-5 sm:flex-row sm:items-center sm:justify-between">
-
                   <div className="text-xs text-slate-400">
                     Payment Method:{" "}
                     <span className="font-bold capitalize text-slate-600">
@@ -346,22 +301,18 @@ setOrders(response);
                     </span>
                   </div>
 
-                  <button
-                    type="button"
-                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-xs font-bold text-slate-700 transition hover:border-indigo-200 hover:text-indigo-600"
+                  <Link
+                    className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 py-4 text-sm font-bold text-white shadow-lg shadow-indigo-200 transition hover:bg-indigo-700 active:scale-95"
+                    href={`/ordersDetails/${order._id}`}
                   >
                     View Order
                     <ArrowRight size={15} />
-                  </button>
-
+                  </Link>
                 </div>
-
               </div>
             );
           })}
-
         </div>
-
       </section>
     </main>
   );

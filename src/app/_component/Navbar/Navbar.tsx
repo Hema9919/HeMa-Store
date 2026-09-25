@@ -305,13 +305,13 @@ export default function Navbar() {
                     <User size={18} className="text-indigo-600" />
                     <span>My Profile ({session?.user?.name || "Account"})</span>
                   </Link>
-       <Link
-                  className="flex items-center gap-1.5 font-medium text-white transition hover:text-indigo-400"
-                  href="/my-orders"
-                >
-                  <Box size={13} />
-                  <span>My Orders</span>
-                </Link>
+                  <Link
+                    className="flex items-center gap-2 rounded-xl px-4 py-3 font-semibold text-slate-700 hover:bg-slate-50"
+                    href="/my-orders"
+                  >
+                    <Box  size={18} className="text-indigo-600" />
+                    <span>My Orders</span>
+                  </Link>
                   <button
                     type="button"
                     onClick={() => {
