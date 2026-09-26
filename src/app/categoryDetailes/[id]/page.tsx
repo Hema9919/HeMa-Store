@@ -128,44 +128,54 @@ export default async function CategoryDetails({
       </section>
 
       {/* ================= SubCate ================= */}
-            <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
+<section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
+  <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+    {subcate.map((category) => (
+      <Link
+        key={category._id}
+        href={`/subcategoryDetailes/${category._id}`}
+        className="group relative aspect-[4/5] overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-600 via-indigo-700 to-slate-950 shadow-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-900/20"
+      >
+        {/* Decorative Glow */}
+        <div className="absolute -right-12 -top-12 h-36 w-36 rounded-full bg-white/10 blur-3xl transition-transform duration-700 group-hover:scale-150" />
 
-        <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          {subcate.map((category) => (
-            <Link
-              key={category._id}
-              href={`/subcategoryDetailes/${category._id}`}
-              className="group relative aspect-[4/5] overflow-hidden rounded-2xl bg-slate-200 shadow-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-900/10"
-            >
+        <div className="absolute -bottom-16 -left-12 h-44 w-44 rounded-full bg-indigo-400/20 blur-3xl transition-transform duration-700 group-hover:scale-125" />
 
-              {/* Dark overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent transition-opacity duration-500 group-hover:from-indigo-950/90" />
-
-              {/* Arrow */}
-              <div className="absolute right-3 top-3 flex h-9 w-9 translate-y-2 items-center justify-center rounded-full bg-white/10 text-white opacity-0 backdrop-blur-md transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                <ArrowUpRight className="h-4 w-4" />
-              </div>
-
-              {/* Content */}
-              <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
-                <div className="mb-2 h-1 w-7 rounded-full bg-indigo-400 transition-all duration-300 group-hover:w-12" />
-
-                <h3 className="text-base font-bold text-white sm:text-lg">
-                  {category.name}
-                </h3>
-
-                <p className="mt-1 flex items-center gap-1 text-xs text-white/60 transition-colors duration-300 group-hover:text-white/80">
-                  Explore Collection
-                  <span className="transition-transform duration-300 group-hover:translate-x-1">
-                    →
-                  </span>
-                </p>
-              </div>
-            </Link>
-          ))}
+        {/* Big Animated Letter */}
+        <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+          <span className="select-none text-[110px] font-black uppercase leading-none text-white/10 transition-all duration-700 ease-out group-hover:scale-125 group-hover:-rotate-6 group-hover:text-white/20 sm:text-[130px]">
+            {category.name.charAt(0)}
+          </span>
         </div>
 
-      </section>
+        {/* Extra Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/10 to-transparent" />
+
+        {/* Arrow */}
+        <div className="absolute right-3 top-3 flex h-9 w-9 translate-y-2 items-center justify-center rounded-full bg-white/10 text-white opacity-0 backdrop-blur-md transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+          <ArrowUpRight className="h-4 w-4" />
+        </div>
+
+        {/* Content */}
+        <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
+          <div className="mb-2 h-1 w-7 rounded-full bg-indigo-300 transition-all duration-300 group-hover:w-12" />
+
+          <h3 className="text-base font-bold text-white sm:text-lg">
+            {category.name}
+          </h3>
+
+          <p className="mt-1 flex items-center gap-1 text-xs text-white/60 transition-colors duration-300 group-hover:text-white/80">
+            Explore Collection
+
+            <span className="transition-transform duration-300 group-hover:translate-x-1">
+              →
+            </span>
+          </p>
+        </div>
+      </Link>
+    ))}
+  </div>
+</section>
 
       {/* ================= BOTTOM INFO ================= */}
       <section className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
